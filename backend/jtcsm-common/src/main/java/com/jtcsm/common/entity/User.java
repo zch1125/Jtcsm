@@ -1,7 +1,6 @@
 package com.jtcsm.common.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
 
 /**
  * 用户实体，对应表 user
@@ -24,12 +23,6 @@ public class User extends BaseEntity {
     /** 性别 0未知 1男 2女 */
     private Integer gender;
 
-    /** 是否 VIP 0否 1是 */
-    private Integer isVip;
-
-    /** 会员过期时间 */
-    private LocalDateTime vipExpireTime;
-
     /** 状态 0禁用 1正常 */
     private Integer status;
 
@@ -45,10 +38,6 @@ public class User extends BaseEntity {
     public void setPhone(String phone) { this.phone = phone; }
     public Integer getGender() { return gender; }
     public void setGender(Integer gender) { this.gender = gender; }
-    public Integer getIsVip() { return isVip; }
-    public void setIsVip(Integer isVip) { this.isVip = isVip; }
-    public LocalDateTime getVipExpireTime() { return vipExpireTime; }
-    public void setVipExpireTime(LocalDateTime vipExpireTime) { this.vipExpireTime = vipExpireTime; }
     public Integer getStatus() { return status; }
     public void setStatus(Integer status) { this.status = status; }
 }

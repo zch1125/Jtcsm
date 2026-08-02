@@ -60,11 +60,6 @@ public class Result<T> implements Serializable {
         return new Result<>(401, message, null);
     }
 
-    /** 需要会员 */
-    public static <T> Result<T> vipRequired() {
-        return new Result<>(402, "该功能需要会员权限", null);
-    }
-
     /** 无权限 */
     public static <T> Result<T> forbidden() {
         return new Result<>(403, "无权限访问", null);

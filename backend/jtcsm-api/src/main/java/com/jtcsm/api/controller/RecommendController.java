@@ -23,7 +23,7 @@ public class RecommendController {
     private RecommendService recommendService;
 
     /**
-     * 个性化推荐（需会员）
+     * 个性化推荐
      * GET /api/v1/recommend/personal
      */
     @GetMapping("/personal")

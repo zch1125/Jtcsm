@@ -20,7 +20,6 @@ public class RecipeDetailVO {
     private String cookMethod;
     private Integer cookTime;
     private Integer calories;
-    private Boolean isVipOnly;
     private Integer viewCount;
     private Integer favoriteCount;
 
@@ -39,7 +38,6 @@ public class RecipeDetailVO {
         vo.cookMethod = r.getCookMethod();
         vo.cookTime = r.getCookTime();
         vo.calories = r.getCalories();
-        vo.isVipOnly = r.getIsVipOnly();
         vo.viewCount = r.getViewCount();
         vo.favoriteCount = r.getFavoriteCount();
         return vo;
@@ -65,8 +63,6 @@ public class RecipeDetailVO {
     public void setCookTime(Integer cookTime) { this.cookTime = cookTime; }
     public Integer getCalories() { return calories; }
     public void setCalories(Integer calories) { this.calories = calories; }
-    public Boolean getIsVipOnly() { return isVipOnly; }
-    public void setIsVipOnly(Boolean isVipOnly) { this.isVipOnly = isVipOnly; }
     public Integer getViewCount() { return viewCount; }
     public void setViewCount(Integer viewCount) { this.viewCount = viewCount; }
     public Integer getFavoriteCount() { return favoriteCount; }

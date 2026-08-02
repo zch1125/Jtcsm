@@ -29,12 +29,6 @@
       "style": {
         "navigationBarTitleText": "个人中心"
       }
-    },
-    {
-      "path": "pages/member/member",
-      "style": {
-        "navigationBarTitleText": "会员中心"
-      }
     }
   ],
   "globalStyle": {

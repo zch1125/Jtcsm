@@ -33,7 +33,6 @@
         <mysql-connector.version>8.0.33</mysql-connector.version>
         <springdoc.version>2.8.4</springdoc.version>
         <jjwt.version>0.12.6</jjwt.version>
-        <wechatpay.version>0.2.17</wechatpay.version>
         <elasticsearch.version>8.15.5</elasticsearch.version>
         <druid.version>1.2.23</druid.version>
         <hutool.version>5.8.32</hutool.version>
@@ -124,13 +123,6 @@
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt-jackson</artifactId>
                 <version>${jjwt.version}</version>
-            </dependency>
-
-            <!-- 微信支付 V3 -->
-            <dependency>
-                <groupId>com.github.wechatpay-apiv3</groupId>
-                <artifactId>wechatpay-java</artifactId>
-                <version>${wechatpay.version}</version>
             </dependency>
 
             <!-- Elasticsearch -->

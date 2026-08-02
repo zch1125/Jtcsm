@@ -19,11 +19,6 @@
       <el-table-column prop="gender" label="性别" width="70">
         <template #default="{ row }">{{ { 0: '未知', 1: '男', 2: '女' }[row.gender ?? 0] }}</template>
       </el-table-column>
-      <el-table-column prop="isVip" label="VIP" width="80">
-        <template #default="{ row }">
-          <el-tag :type="row.isVip === 1 ? 'warning' : 'info'">{{ row.isVip === 1 ? 'VIP' : '普通' }}</el-tag>
-        </template>
-      </el-table-column>
       <el-table-column prop="status" label="状态" width="80">
         <template #default="{ row }">
           <el-tag :type="row.status === 1 ? 'success' : 'danger'">{{ row.status === 1 ? '正常' : '禁用' }}</el-tag>

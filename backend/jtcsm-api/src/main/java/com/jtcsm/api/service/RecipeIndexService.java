@@ -194,7 +194,6 @@ public class RecipeIndexService implements CommandLineRunner {
                 doc.put("cookTime", recipe.getCookTime() != null ? recipe.getCookTime() : 0);
                 doc.put("calories", recipe.getCalories() != null ? recipe.getCalories() : 0);
                 doc.put("coverImage", recipe.getCoverImage() != null ? recipe.getCoverImage() : "");
-                doc.put("isVipOnly", recipe.getIsVipOnly() != null && recipe.getIsVipOnly());
                 doc.put("viewCount", recipe.getViewCount() != null ? recipe.getViewCount() : 0);
                 doc.put("favoriteCount", recipe.getFavoriteCount() != null ? recipe.getFavoriteCount() : 0);
                 doc.put("ingredientsText", ingredientsText);

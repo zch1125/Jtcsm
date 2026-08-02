@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jtcsm.api.mapper.AiGeneratedRecipeMapper;
-import com.jtcsm.api.mapper.UserMapper;
 import com.jtcsm.api.service.AiService;
 import com.jtcsm.api.service.FavoriteService;
 import com.jtcsm.api.service.RagPipelineService;
@@ -15,7 +14,6 @@ import com.jtcsm.common.dto.AiGenerateResponse;
 import com.jtcsm.common.dto.AiRecipeItem;
 import com.jtcsm.common.dto.RagContext;
 import com.jtcsm.common.entity.AiGeneratedRecipe;
-import com.jtcsm.common.entity.User;
 import com.jtcsm.common.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,17 +42,13 @@ public class AiServiceImpl implements AiService {
 
     private static final Logger log = LoggerFactory.getLogger(AiServiceImpl.class);
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    /** 普通用户每日生成次数上限 */
-    private static final int REGULAR_LIMIT = 3;
-    /** 会员每日生成次数上限 */
-    private static final int VIP_LIMIT = 100;
+    /** 每日生成次数上限 */
+    private static final int DAILY_LIMIT = 3;
 
     @Autowired
     private RestClient.Builder restClientBuilder;
     @Autowired
     private AiGeneratedRecipeMapper aiMapper;
-    @Autowired
-    private UserMapper userMapper;
     @Autowired
     private FavoriteService favoriteService;
     @Autowired
@@ -253,12 +247,10 @@ public class AiServiceImpl implements AiService {
     // ==================== 以下方法保持原实现 ====================
 
     private void checkRateLimit(Long userId) {
-        User user = userMapper.selectById(userId);
-        int max = (user != null && user.getIsVip() != null && user.getIsVip() == 1) ? VIP_LIMIT : REGULAR_LIMIT;
         String k = "jtcsm:ai:limit:" + userId + ":" + LocalDate.now().toString();
         String v = redis.opsForValue().get(k);
         int used = v == null ? 0 : Integer.parseInt(v);
-        if (used >= max) throw new BusinessException(429, "每日 AI 生成次数已达上限（" + max + "次/天）");
+        if (used >= DAILY_LIMIT) throw new BusinessException(429, "每日 AI 生成次数已达上限（" + DAILY_LIMIT + "次/天）");
     }
 
     @Override

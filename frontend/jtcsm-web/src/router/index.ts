@@ -36,18 +36,6 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '用户管理', icon: 'User' }
       },
       {
-        path: 'orders',
-        name: 'Orders',
-        component: () => import('@/views/OrderList.vue'),
-        meta: { title: '订单管理', icon: 'Tickets' }
-      },
-      {
-        path: 'plans',
-        name: 'Plans',
-        component: () => import('@/views/PlanList.vue'),
-        meta: { title: '套餐管理', icon: 'PriceTag' }
-      },
-      {
         path: 'monitor',
         name: 'Monitor',
         component: () => import('@/views/SystemMonitor.vue'),

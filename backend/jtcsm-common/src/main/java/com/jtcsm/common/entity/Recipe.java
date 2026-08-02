@@ -28,9 +28,6 @@ public class Recipe extends BaseEntity {
 
     private Integer calories;
 
-    @TableField("is_vip_only")
-    private Boolean isVipOnly;
-
     @TableField("view_count")
     private Integer viewCount;
 
@@ -59,8 +56,6 @@ public class Recipe extends BaseEntity {
     public void setCookTime(Integer cookTime) { this.cookTime = cookTime; }
     public Integer getCalories() { return calories; }
     public void setCalories(Integer calories) { this.calories = calories; }
-    public Boolean getIsVipOnly() { return isVipOnly; }
-    public void setIsVipOnly(Boolean isVipOnly) { this.isVipOnly = isVipOnly; }
     public Integer getViewCount() { return viewCount; }
     public void setViewCount(Integer viewCount) { this.viewCount = viewCount; }
     public Integer getFavoriteCount() { return favoriteCount; }

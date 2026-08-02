@@ -49,7 +49,6 @@ public LoginResponse login(LoginRequest request) {
                 user.setNickname(request.getNickname() != null ? request.getNickname() : "模拟用户");
                 user.setAvatar(request.getAvatar() != null ? request.getAvatar() : "");
                 user.setGender(0);
-                user.setIsVip(0);
                 user.setStatus(1);
                 user.setCreateTime(LocalDateTime.now());
                 user.setUpdateTime(LocalDateTime.now());
@@ -73,7 +72,7 @@ public LoginResponse login(LoginRequest request) {
         log.info("用户登录成功: userId={}, isMock={}", user.getId(), isMock);
 
         return new LoginResponse(token, user.getId(), user.getNickname(),
-                user.getAvatar(), user.getIsVip() == 1);
+                user.getAvatar());
     }
 
     @Override

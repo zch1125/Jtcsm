@@ -133,7 +133,7 @@ public class HybridSearchService {
                 .source(sc -> sc.filter(f -> f
                         .includes("recipeId", "name", "cuisine", "difficulty",
                                 "cookMethod", "cookTime", "calories", "coverImage",
-                                "description", "ingredientsText", "stepsText", "isVipOnly"))));
+                                "description", "ingredientsText", "stepsText"))));
 
         SearchResponse<Map> response = esClient.search(request, Map.class);
         return response.hits().hits();
@@ -161,7 +161,7 @@ public class HybridSearchService {
                 .source(sc -> sc.filter(f -> f
                         .includes("recipeId", "name", "cuisine", "difficulty",
                                 "cookMethod", "cookTime", "calories", "coverImage",
-                                "description", "ingredientsText", "stepsText", "isVipOnly"))));
+                                "description", "ingredientsText", "stepsText"))));
 
         SearchResponse<Map> response = esClient.search(request, Map.class);
         return response.hits().hits();

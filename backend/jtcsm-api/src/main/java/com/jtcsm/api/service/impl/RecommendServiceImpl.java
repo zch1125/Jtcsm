@@ -2,12 +2,9 @@ package com.jtcsm.api.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.jtcsm.api.mapper.RecipeMapper;
-import com.jtcsm.api.mapper.UserMapper;
 import com.jtcsm.api.mapper.UserPreferenceMapper;
 import com.jtcsm.api.service.RecommendService;
-import com.jtcsm.common.annotation.VipRequired;
 import com.jtcsm.common.entity.Recipe;
-import com.jtcsm.common.entity.User;
 import com.jtcsm.common.entity.UserPreference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -28,11 +25,9 @@ public class RecommendServiceImpl implements RecommendService {
 
     @Autowired private RecipeMapper recipeMapper;
     @Autowired private UserPreferenceMapper preferenceMapper;
-    @Autowired private UserMapper userMapper;
     @Autowired private StringRedisTemplate redis;
 
     @Override
-    @VipRequired
     public List<Recipe> personalRecommend(Long userId) {
         // 基于用户偏好查询菜品：匹配菜系和难度，最多返回 10 条
         UserPreference pref = preferenceMapper.selectOne(
@@ -59,16 +54,6 @@ public class RecommendServiceImpl implements RecommendService {
             return java.util.Arrays.stream(ids).map(id -> recipeMapper.selectById(Long.parseLong(id))).collect(Collectors.toList());
         }
 
-        User user = userMapper.selectById(userId);
-        boolean isVip = user != null && user.getIsVip() == 1;
-        // 非会员每日只能刷新一次推荐
-        if (!isVip) {
-            String limitKey = "jtcsm:daily:limit:" + userId + ":" + today;
-            String val = redis.opsForValue().get(limitKey);
-            if (val != null) return dailyCache();
-            redis.opsForValue().set(limitKey, "1", Duration.ofDays(1));
-        }
-
         // 从所有上架菜谱中随机抽取 5 条并缓存
         List<Recipe> all = recipeMapper.selectList(
             new LambdaQueryWrapper<Recipe>().eq(Recipe::getStatus, 1).orderByDesc(Recipe::getFavoriteCount));
@@ -77,16 +62,6 @@ public class RecommendServiceImpl implements RecommendService {
         String ids = top.stream().map(r -> String.valueOf(r.getId())).collect(Collectors.joining(","));
         redis.opsForValue().set(cacheKey, ids, Duration.ofDays(1));
         return top;
-    }
-
-    private List<Recipe> dailyCache() {
-        // 读取缓存的每日推荐列表
-        String cached = redis.opsForValue().get("jtcsm:daily:rec:" + LocalDate.now().toString());
-        if (cached != null) {
-            String[] ids = cached.split(",");
-            return java.util.Arrays.stream(ids).map(id -> recipeMapper.selectById(Long.parseLong(id))).collect(Collectors.toList());
-        }
-        return recipeMapper.selectList(new LambdaQueryWrapper<Recipe>().eq(Recipe::getStatus, 1).last("LIMIT 5"));
     }
 
     @Override

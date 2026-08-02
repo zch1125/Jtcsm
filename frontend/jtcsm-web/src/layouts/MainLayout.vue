@@ -24,14 +24,6 @@
           <el-icon><User /></el-icon>
           <span>用户管理</span>
         </el-menu-item>
-        <el-menu-item index="/orders">
-          <el-icon><Tickets /></el-icon>
-          <span>订单管理</span>
-        </el-menu-item>
-        <el-menu-item index="/plans">
-          <el-icon><PriceTag /></el-icon>
-          <span>套餐管理</span>
-        </el-menu-item>
         <el-menu-item index="/monitor">
           <el-icon><Monitor /></el-icon>
           <span>系统监控</span>

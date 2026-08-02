@@ -17,9 +17,6 @@ export const useUserStore = defineStore("user", () => {
   /** 用户 openId */
   const openId = ref<string>("")
 
-  /** 是否 VIP 会员 */
-  const isVip = ref(false)
-
   /** 用户昵称 */
   const nickname = ref<string>("")
 
@@ -41,14 +38,12 @@ export const useUserStore = defineStore("user", () => {
     t: string,
     uid: number,
     oid: string,
-    vip: boolean,
     nick: string,
     ava: string
   ) {
     token.value = t
     userId.value = uid
     openId.value = oid
-    isVip.value = vip
     nickname.value = nick
     avatar.value = ava
     initialized.value = true
@@ -67,7 +62,6 @@ export const useUserStore = defineStore("user", () => {
     token.value = ""
     userId.value = 0
     openId.value = ""
-    isVip.value = false
     nickname.value = ""
     avatar.value = ""
 
@@ -99,7 +93,6 @@ export const useUserStore = defineStore("user", () => {
     token,
     userId,
     openId,
-    isVip,
     nickname,
     avatar,
     initialized,

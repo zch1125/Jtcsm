@@ -78,7 +78,7 @@ async function loadData() {
   try {
     dailyList.value = await getDailyRecommend()
   } catch (e) {
-    // 非 VIP 用户每日推荐限流时静默处理
+    // 每日推荐接口异常时静默处理
   }
   loadSearchHistory()
 }

@@ -17,15 +17,11 @@ public class LoginResponse {
     /** 头像 URL */
     private String avatar;
 
-    /** 是否 VIP */
-    private Boolean isVip;
-
-    public LoginResponse(String token, Long userId, String nickname, String avatar, Boolean isVip) {
+    public LoginResponse(String token, Long userId, String nickname, String avatar) {
         this.token = token;
         this.userId = userId;
         this.nickname = nickname;
         this.avatar = avatar;
-        this.isVip = isVip;
     }
 
     public String getToken() { return token; }
@@ -36,6 +32,4 @@ public class LoginResponse {
     public void setNickname(String nickname) { this.nickname = nickname; }
     public String getAvatar() { return avatar; }
     public void setAvatar(String avatar) { this.avatar = avatar; }
-    public Boolean getIsVip() { return isVip; }
-    public void setIsVip(Boolean isVip) { this.isVip = isVip; }
 }

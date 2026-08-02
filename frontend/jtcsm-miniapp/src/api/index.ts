@@ -39,7 +39,6 @@ interface LoginResponseData {
   userId: number
   nickname: string
   avatar: string
-  isVip: boolean
 }
 
 /** 微信登录 / 模拟登录 */
@@ -76,7 +75,7 @@ export function getDailyRecommend(): Promise<any[]> {
   return request.get("/api/v1/recommend/daily")
 }
 
-/** 个性化推荐（VIP专属） */
+/** 个性化推荐 */
 export function getPersonalRecommend(): Promise<any[]> {
   return request.get("/api/v1/recommend/personal")
 }
@@ -184,63 +183,4 @@ export function getSearchHistory(): Promise<SearchHistoryItem[]> {
 /** 清空搜索历史 */
 export function clearSearchHistory() {
   return request.delete("/api/v1/search/history")
-}
-
-// ==================== 会员模块 ====================
-
-interface MembershipPlanItem {
-  id: number
-  name: string
-  price: number
-  originalPrice: number
-  days: number
-  description: string
-}
-
-interface MembershipStatusItem {
-  isVip: boolean
-  vipExpireTime: string
-  planName: string
-  remainingDays: number
-}
-
-/** 获取套餐列表 */
-export function getPlans(): Promise<MembershipPlanItem[]> {
-  return request.get("/api/v1/membership/plans")
-}
-
-/** 获取会员状态 */
-export function getMembershipStatus(): Promise<MembershipStatusItem> {
-  return request.get("/api/v1/membership/status")
-}
-
-// ==================== 订单模块 ====================
-
-/** 创建订单 */
-export function createOrder(planId: number): Promise<string> {
-  return request.post("/api/v1/order/create", { planId })
-}
-
-/** 模拟支付回调 */
-export function simulatePay(orderNo: string) {
-  return request.post("/api/v1/order/callback", {
-    orderNo,
-    transactionId: "SIM" + Date.now(),
-    payType: "wechat",
-  })
-}
-
-interface OrderItem {
-  id: number
-  orderNo: string
-  planName: string
-  amount: number
-  status: number
-  payTime: string
-  createdAt: string
-}
-
-/** 订单历史 */
-export function getOrderHistory(page = 1, size = 20): Promise<OrderItem[]> {
-  return request.get("/api/v1/order/history", { page, size })
 }

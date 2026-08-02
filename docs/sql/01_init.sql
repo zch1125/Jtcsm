@@ -15,8 +15,6 @@ CREATE TABLE `user` (
     `avatar`          VARCHAR(512) DEFAULT NULL             COMMENT '澶村儚URL',
     `phone`           VARCHAR(20)  DEFAULT NULL             COMMENT '鎵嬫満鍙?,
     `gender`          TINYINT      DEFAULT 0                COMMENT '0鏈煡 1鐢?2濂?,
-    `is_vip`          TINYINT      DEFAULT 0                COMMENT '0鍚?1鏄?,
-    `vip_expire_time` DATETIME     DEFAULT NULL             COMMENT '浼氬憳杩囨湡鏃堕棿',
     `status`          TINYINT      DEFAULT 1                COMMENT '0绂佺敤 1姝ｅ父',
     `created_at`      DATETIME     DEFAULT CURRENT_TIMESTAMP COMMENT '鍒涘缓鏃堕棿',
     `updated_at`      DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '鏇存柊鏃堕棿',
@@ -53,7 +51,6 @@ CREATE TABLE `recipe` (
     `cook_method`    VARCHAR(64)  DEFAULT NULL             COMMENT '鐑归オ鏂瑰紡',
     `cook_time`      INT          DEFAULT NULL             COMMENT '鐑归オ鏃堕棿锛堝垎閽燂級',
     `calories`       INT          DEFAULT NULL             COMMENT '鐑噺锛堝崈鍗★級',
-    `is_vip_only`    TINYINT      DEFAULT 0                COMMENT 'VIP涓撳睘 0鍚?1鏄?,
     `view_count`     INT          DEFAULT 0                COMMENT '娴忚閲?,
     `favorite_count` INT          DEFAULT 0                COMMENT '鏀惰棌鏁?,
     `status`         TINYINT      DEFAULT 1                COMMENT '0涓嬫灦 1涓婃灦',
@@ -132,73 +129,9 @@ CREATE TABLE `user_history` (
     INDEX `idx_viewed_at` (`viewed_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='娴忚鍘嗗彶琛?;
 
--- ========================================================
--- 9. 浼氬憳濂楅琛?-- ========================================================
-CREATE TABLE `membership_plan` (
-    `id`             BIGINT        NOT NULL AUTO_INCREMENT,
-    `name`           VARCHAR(32)   NOT NULL              COMMENT '濂楅鍚嶇О',
-    `price`          DECIMAL(10,2) NOT NULL              COMMENT '鍞环',
-    `original_price` DECIMAL(10,2) NOT NULL              COMMENT '鍘熶环',
-    `days`           INT           NOT NULL              COMMENT '鏈夋晥鏈熷ぉ鏁?,
-    `description`    VARCHAR(256)  DEFAULT NULL           COMMENT '濂楅璇存槑',
-    `is_enabled`     TINYINT       DEFAULT 1             COMMENT '0绂佺敤 1鍚敤',
-    `created_at`     DATETIME      DEFAULT CURRENT_TIMESTAMP,
-,
-    `updated_at`     DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='浼氬憳濂楅琛?;
 
--- ========================================================
--- 10. 鐢ㄦ埛浼氬憳琛?-- ========================================================
-CREATE TABLE `user_membership` (
-    `id`          BIGINT   NOT NULL AUTO_INCREMENT,
-    `user_id`     BIGINT   NOT NULL,
-    `plan_id`     BIGINT   DEFAULT NULL             COMMENT '濂楅ID',
-    `start_time`  DATETIME NOT NULL                COMMENT '寮€濮嬫椂闂?,
-    `expire_time` DATETIME NOT NULL                COMMENT '杩囨湡鏃堕棿',
-    `status`      TINYINT  DEFAULT 1               COMMENT '0杩囨湡 1鏈夋晥',
-    `created_at`  DATETIME DEFAULT CURRENT_TIMESTAMP,
-,
-    `updated_at`     DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_member_user_id` (`user_id`),
-    INDEX `idx_member_plan_id` (`plan_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='鐢ㄦ埛浼氬憳琛?;
 
--- ========================================================
--- 11. 璁㈠崟琛?-- ========================================================
-CREATE TABLE `order` (
-    `id`         BIGINT        NOT NULL AUTO_INCREMENT,
-    `order_no`   VARCHAR(32)   NOT NULL              COMMENT '璁㈠崟鍙?,
-    `user_id`    BIGINT        NOT NULL,
-    `plan_id`    BIGINT        DEFAULT NULL           COMMENT '濂楅ID',
-    `amount`     DECIMAL(10,2) NOT NULL              COMMENT '瀹炰粯閲戦',
-    `status`     TINYINT       DEFAULT 0             COMMENT '0寰呮敮浠?1宸叉敮浠?2宸插彇娑?,
-    `pay_time`   DATETIME      DEFAULT NULL           COMMENT '鏀粯鏃堕棿',
-    `created_at` DATETIME      DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` DATETIME      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_order_no` (`order_no`),
-    INDEX `idx_order_user_id` (`user_id`),
-    INDEX `idx_order_plan_id` (`plan_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='璁㈠崟琛?;
 
--- ========================================================
--- 12. 鏀粯娴佹按琛?-- ========================================================
-CREATE TABLE `payment_record` (
-    `id`             BIGINT        NOT NULL AUTO_INCREMENT,
-    `order_id`       BIGINT        DEFAULT NULL        COMMENT '璁㈠崟ID',
-    `transaction_id` VARCHAR(64)   DEFAULT NULL        COMMENT '寰俊鏀粯娴佹按鍙?,
-    `pay_type`       VARCHAR(16)   DEFAULT NULL        COMMENT '鏀粯鏂瑰紡',
-    `amount`         DECIMAL(10,2) DEFAULT NULL        COMMENT '鏀粯閲戦',
-    `status`         TINYINT       DEFAULT 0           COMMENT '0澶辫触 1鎴愬姛',
-    `pay_time`       DATETIME      DEFAULT NULL,
-    `created_at`     DATETIME      DEFAULT CURRENT_TIMESTAMP,
-,
-    `updated_at`     DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    INDEX `idx_pay_order_id` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='鏀粯娴佹按琛?;
 
 -- ========================================================
 -- 13. AI 鐢熸垚璁板綍琛?-- ========================================================

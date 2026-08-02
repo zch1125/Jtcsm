@@ -26,7 +26,6 @@ onLaunch(async () => {
       res.token,
       res.userId,
       "mock_openid",
-      res.isVip,
       res.nickname,
       res.avatar
     )

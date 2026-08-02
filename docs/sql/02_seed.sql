@@ -4,13 +4,6 @@
 -- ========================================================
 USE jtcsm;
 
--- ========================================================
--- 会员套餐（3个）
--- ========================================================
-INSERT INTO membership_plan (name, price, original_price, days, description, is_enabled) VALUES
-('月卡',     9.90,  19.90, 30,  '30天会员体验，解锁所有VIP菜谱', 1),
-('季卡',     24.90, 59.70, 90,  '90天畅享，节省30%',            1),
-('年卡',     88.00, 238.80, 365, '全年无限用，低至0.24元/天',    1);
 
 -- ========================================================
 -- 食材字典（~80种常见食材）
@@ -54,8 +47,8 @@ INSERT INTO ingredient (name, category) VALUES
 -- ========================================================
 
 -- 1. 番茄炒蛋
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('番茄炒蛋','经典国民家常菜，酸甜可口，老少皆宜','家常菜','简单','炒',15,120,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('番茄炒蛋','经典国民家常菜，酸甜可口，老少皆宜','家常菜','简单','炒',15,120,0,0,1,'system');
 SET @r1 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r1,(SELECT id FROM ingredient WHERE name='番茄'),'番茄','2个',1),
@@ -71,8 +64,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r1,5,'撒上葱花，出锅装盘',1);
 
 -- 2. 红烧肉
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('红烧肉','色泽红亮，肥而不腻，入口即化的经典硬菜','家常菜','普通','炖',90,580,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('红烧肉','色泽红亮，肥而不腻，入口即化的经典硬菜','家常菜','普通','炖',90,580,0,0,1,'system');
 SET @r2 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r2,(SELECT id FROM ingredient WHERE name='猪五花肉'),'猪五花肉','500克',1),
@@ -92,8 +85,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r2,6,'大火收汁至汤汁浓稠，出锅装盘',5);
 
 -- 3. 麻婆豆腐
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('麻婆豆腐','麻辣鲜香，豆腐嫩滑入味，川菜代表之一','川菜','普通','烧',15,260,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('麻婆豆腐','麻辣鲜香，豆腐嫩滑入味，川菜代表之一','川菜','普通','烧',15,260,0,0,1,'system');
 SET @r3 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r3,(SELECT id FROM ingredient WHERE name='豆腐'),'嫩豆腐','400克',1),
@@ -110,8 +103,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r3,5,'淋入水淀粉勾芡，撒花椒粉和葱花出锅',3);
 
 -- 4. 宫保鸡丁
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('宫保鸡丁','酸甜微辣，花生酥脆，经典川菜','川菜','普通','炒',25,380,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('宫保鸡丁','酸甜微辣，花生酥脆，经典川菜','川菜','普通','炒',25,380,0,0,1,'system');
 SET @r4 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r4,(SELECT id FROM ingredient WHERE name='鸡胸肉'),'鸡胸肉','300克',1),
@@ -131,8 +124,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r4,6,'倒入鸡丁和料汁大火翻炒均匀，加入花生米翻匀出锅',2);
 
 -- 5. 清蒸鲈鱼
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('清蒸鲈鱼','鲜嫩味美，原汁原味，粤菜经典','粤菜','简单','蒸',20,320,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('清蒸鲈鱼','鲜嫩味美，原汁原味，粤菜经典','粤菜','简单','蒸',20,320,0,0,1,'system');
 SET @r5 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r5,(SELECT id FROM ingredient WHERE name='鲈鱼'),'鲈鱼','1条（约500克）',1),
@@ -147,8 +140,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r5,4,'热油烧至冒烟，浇在葱姜丝上激出香味',1);
 
 -- 6. 酸辣土豆丝
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('酸辣土豆丝','酸辣爽脆，快手下饭素菜','家常菜','简单','炒',12,185,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('酸辣土豆丝','酸辣爽脆，快手下饭素菜','家常菜','简单','炒',12,185,0,0,1,'system');
 SET @r6 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r6,(SELECT id FROM ingredient WHERE name='土豆'),'土豆','2个',1),
@@ -164,8 +157,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r6,5,'翻炒均匀即可出锅',2);
 
 -- 7. 糖醋排骨
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('糖醋排骨','酸甜可口，外酥里嫩，宴客必备','家常菜','普通','炖',50,450,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('糖醋排骨','酸甜可口，外酥里嫩，宴客必备','家常菜','普通','炖',50,450,0,0,1,'system');
 SET @r7 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r7,(SELECT id FROM ingredient WHERE name='排骨'),'排骨','500克',1),
@@ -184,8 +177,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r7,6,'大火收汁至汤汁浓稠裹住排骨，撒芝麻点缀',5);
 
 -- 8. 鱼香肉丝
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('鱼香肉丝','虽然没有鱼，但酸甜微辣的鱼香味让人欲罢不能','川菜','普通','炒',20,350,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('鱼香肉丝','虽然没有鱼，但酸甜微辣的鱼香味让人欲罢不能','川菜','普通','炒',20,350,0,0,1,'system');
 SET @r8 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r8,(SELECT id FROM ingredient WHERE name='猪里脊'),'猪里脊','300克',1),
@@ -204,8 +197,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r8,6,'倒回肉丝和青椒丝，淋入鱼香汁大火翻炒均匀',2);
 
 -- 9. 地三鲜
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('地三鲜','东北经典素菜，茄子土豆青椒的完美组合','家常菜','普通','炒',25,280,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('地三鲜','东北经典素菜，茄子土豆青椒的完美组合','家常菜','普通','炒',25,280,0,0,1,'system');
 SET @r9 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r9,(SELECT id FROM ingredient WHERE name='土豆'),'土豆','1个',1),
@@ -221,8 +214,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r9,5,'加生抽、盐调味，快速翻炒均匀出锅',2);
 
 -- 10. 手撕包菜
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('手撕包菜','酸辣脆爽，简单下饭的平民美味','家常菜','简单','炒',10,145,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('手撕包菜','酸辣脆爽，简单下饭的平民美味','家常菜','简单','炒',10,145,0,0,1,'system');
 SET @r10 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r10,(SELECT id FROM ingredient WHERE name='包菜'),'包菜','半棵',1),
@@ -237,8 +230,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r10,4,'沿锅边淋入醋，加盐调味，翻炒均匀出锅',2);
 
 -- 11. 可乐鸡翅
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('可乐鸡翅','甜嫩可口，零失败新手菜','家常菜','简单','炖',30,380,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('可乐鸡翅','甜嫩可口，零失败新手菜','家常菜','简单','炖',30,380,0,0,1,'system');
 SET @r11 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r11,(SELECT id FROM ingredient WHERE name='鸡翅'),'鸡翅中','10个',1),
@@ -254,8 +247,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r11,5,'转大火收汁至浓稠，装盘撒芝麻',3);
 
 -- 12. 回锅肉
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('回锅肉','川菜中的扛把子，肥而不腻，下饭神器','川菜','普通','炒',30,480,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('回锅肉','川菜中的扛把子，肥而不腻，下饭神器','川菜','普通','炒',30,480,0,0,1,'system');
 SET @r12 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r12,(SELECT id FROM ingredient WHERE name='猪五花肉'),'五花肉','400克',1),
@@ -272,8 +265,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r12,6,'混合翻炒后加入蒜苗和青椒炒至断生即可',2);
 
 -- 13. 蒜蓉西兰花
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('蒜蓉西兰花','清爽脆嫩，健康低卡','家常菜','简单','焯+炒',10,120,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('蒜蓉西兰花','清爽脆嫩，健康低卡','家常菜','简单','焯+炒',10,120,0,0,1,'system');
 SET @r13 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r13,(SELECT id FROM ingredient WHERE name='西兰花'),'西兰花','1棵',1),
@@ -287,8 +280,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r13,4,'放入西兰花，加蚝油和盐快速翻炒均匀即可',2);
 
 -- 14. 水煮肉片
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('水煮肉片','麻辣鲜香，肉片嫩滑，川菜经典大菜','川菜','困难','煮',35,520,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('水煮肉片','麻辣鲜香，肉片嫩滑，川菜经典大菜','川菜','困难','煮',35,520,0,0,1,'system');
 SET @r14 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r14,(SELECT id FROM ingredient WHERE name='猪里脊'),'猪里脊','300克',1),
@@ -306,8 +299,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r14,5,'撒上干辣椒段和花椒，浇热油激出香味',2);
 
 -- 15. 家常豆腐
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('家常豆腐','外焦里嫩，咸香入味','家常菜','简单','煎',15,230,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('家常豆腐','外焦里嫩，咸香入味','家常菜','简单','煎',15,230,0,0,1,'system');
 SET @r15 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r15,(SELECT id FROM ingredient WHERE name='豆腐'),'老豆腐','400克',1),
@@ -323,8 +316,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r15,5,'大火收汁即可',1);
 
 -- 16. 蛋炒饭
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('蛋炒饭','粒粒分明，简单美味，最暖心的家常主食','主食','简单','炒',10,380,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('蛋炒饭','粒粒分明，简单美味，最暖心的家常主食','主食','简单','炒',10,380,0,0,1,'system');
 SET @r16 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r16,(SELECT id FROM ingredient WHERE name='大米'),'隔夜米饭','2碗',1),
@@ -338,8 +331,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r16,4,'加盐调味，撒葱花翻炒均匀出锅',1);
 
 -- 17. 白切鸡
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('白切鸡','皮爽肉滑，原汁原味，粤菜代表作','粤菜','普通','煮',45,420,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('白切鸡','皮爽肉滑，原汁原味，粤菜代表作','粤菜','普通','煮',45,420,0,0,1,'system');
 SET @r17 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r17,(SELECT id FROM ingredient WHERE name='鸡腿'),'三黄鸡','1只（约1.5kg）',1),
@@ -355,8 +348,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r17,6,'沥干斩块，佐以姜葱蘸料食用',5);
 
 -- 18. 冬瓜排骨汤
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('冬瓜排骨汤','清淡鲜美，消暑解腻的家常汤品','家常菜','简单','炖',60,280,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('冬瓜排骨汤','清淡鲜美，消暑解腻的家常汤品','家常菜','简单','炖',60,280,0,0,1,'system');
 SET @r18 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r18,(SELECT id FROM ingredient WHERE name='排骨'),'排骨','400克',1),
@@ -371,8 +364,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r18,5,'加盐调味即可',1);
 
 -- 19. 酸辣汤
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('酸辣汤','酸辣开胃，暖身驱寒，经典中式汤品','家常菜','简单','煮',15,150,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('酸辣汤','酸辣开胃，暖身驱寒，经典中式汤品','家常菜','简单','煮',15,150,0,0,1,'system');
 SET @r19 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r19,(SELECT id FROM ingredient WHERE name='豆腐'),'嫩豆腐','200克',1),
@@ -389,8 +382,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r19,5,'转圈淋入蛋液成蛋花，出锅撒葱花',1);
 
 -- 20. 干炒牛河
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('干炒牛河','锅气十足，河粉爽滑，经典粤式炒粉','粤菜','普通','炒',20,420,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('干炒牛河','锅气十足，河粉爽滑，经典粤式炒粉','粤菜','普通','炒',20,420,0,0,1,'system');
 SET @r20 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r20,(SELECT id FROM ingredient WHERE name='河粉'),'河粉','400克',1),
@@ -407,8 +400,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r20,5,'加入牛肉和葱段，淋入生抽，翻炒均匀出锅',2);
 
 -- 21. 蒜蓉粉丝虾
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('蒜蓉粉丝虾','蒜香浓郁，粉丝吸满虾汁，宴客硬菜','家常菜','普通','蒸',15,280,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('蒜蓉粉丝虾','蒜香浓郁，粉丝吸满虾汁，宴客硬菜','家常菜','普通','蒸',15,280,0,0,1,'system');
 SET @r21 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r21,(SELECT id FROM ingredient WHERE name='虾'),'大虾','12只',1),
@@ -424,8 +417,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r21,5,'出锅撒葱花，淋热油激香',1);
 
 -- 22. 辣子鸡
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('辣子鸡','麻辣干香，在辣椒堆里找鸡丁的乐趣','川菜','普通','炸+炒',35,460,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('辣子鸡','麻辣干香，在辣椒堆里找鸡丁的乐趣','川菜','普通','炸+炒',35,460,0,0,1,'system');
 SET @r22 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r22,(SELECT id FROM ingredient WHERE name='鸡腿'),'鸡腿','500克',1),
@@ -442,8 +435,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r22,5,'倒入鸡丁大火翻炒，撒盐和白糖调味',2);
 
 -- 23. 葱油拌面
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('葱油拌面','葱香四溢，简单快手，上海经典','家常菜','简单','煮+拌',15,350,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('葱油拌面','葱香四溢，简单快手，上海经典','家常菜','简单','煮+拌',15,350,0,0,1,'system');
 SET @r23 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r23,(SELECT id FROM ingredient WHERE name='面条'),'挂面','200克',1),
@@ -459,8 +452,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r23,5,'淋上葱油和酱汁拌匀即可',1);
 
 -- 24. 红烧带鱼
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('红烧带鱼','咸鲜入味，肉质细嫩，下饭好菜','家常菜','普通','炖',25,320,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('红烧带鱼','咸鲜入味，肉质细嫩，下饭好菜','家常菜','普通','炖',25,320,0,0,1,'system');
 SET @r24 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r24,(SELECT id FROM ingredient WHERE name='带鱼'),'带鱼','400克',1),
@@ -477,8 +470,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r24,5,'小火炖8分钟，大火收汁即可',10);
 
 -- 25. 青椒肉丝
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('青椒肉丝','简单快手，家常便饭中的经典','家常菜','简单','炒',15,300,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('青椒肉丝','简单快手，家常便饭中的经典','家常菜','简单','炒',15,300,0,0,1,'system');
 SET @r25 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r25,(SELECT id FROM ingredient WHERE name='猪瘦肉'),'猪瘦肉','250克',1),
@@ -494,8 +487,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r25,5,'倒回肉丝，加盐和生抽调味，快速翻炒均匀',2);
 
 -- 26. 紫菜蛋花汤
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('紫菜蛋花汤','清淡鲜美，三分钟快汤','家常菜','简单','煮',5,80,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('紫菜蛋花汤','清淡鲜美，三分钟快汤','家常菜','简单','煮',5,80,0,0,1,'system');
 SET @r26 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r26,(SELECT id FROM ingredient WHERE name='紫菜'),'紫菜','1片',1),
@@ -510,8 +503,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r26,4,'加盐调味，倒入放有紫菜的碗中，撒葱花',1);
 
 -- 27. 番茄蛋汤
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('番茄蛋汤','酸甜开胃，家常最温暖的汤','家常菜','简单','煮',10,120,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('番茄蛋汤','酸甜开胃，家常最温暖的汤','家常菜','简单','煮',10,120,0,0,1,'system');
 SET @r27 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r27,(SELECT id FROM ingredient WHERE name='番茄'),'番茄','2个',1),
@@ -526,8 +519,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r27,5,'撒葱花出锅',1);
 
 -- 28. 红烧茄子
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('红烧茄子','软糯入味，比肉还好吃的素菜','家常菜','简单','烧',20,260,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('红烧茄子','软糯入味，比肉还好吃的素菜','家常菜','简单','烧',20,260,0,0,1,'system');
 SET @r28 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r28,(SELECT id FROM ingredient WHERE name='茄子'),'紫茄子','2根',1),
@@ -543,8 +536,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r28,5,'大火收汁，撒葱花出锅',1);
 
 -- 29. 剁椒鱼头
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('剁椒鱼头','鲜辣嫩滑，湘菜经典，宴客超有面','川菜','普通','蒸',25,350,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('剁椒鱼头','鲜辣嫩滑，湘菜经典，宴客超有面','川菜','普通','蒸',25,350,0,0,1,'system');
 SET @r29 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r29,(SELECT id FROM ingredient WHERE name='鲢鱼头'),'胖头鱼头','1个（约800克）',1),
@@ -560,8 +553,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r29,5,'取出撒葱花，淋上热油即可',2);
 
 -- 30. 煲仔饭
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('煲仔饭','焦香锅巴，腊味飘香，港式经典','粤菜','困难','焖',40,450,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('煲仔饭','焦香锅巴，腊味飘香，港式经典','粤菜','困难','焖',40,450,0,0,1,'system');
 SET @r30 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r30,(SELECT id FROM ingredient WHERE name='大米'),'大米','200克',1),
@@ -578,8 +571,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r30,6,'关火后焖3分钟，放入油菜，淋酱汁拌匀',3);
 
 -- 31. 叉烧
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('叉烧','色泽红亮，甜香可口，广式经典烧味','粤菜','普通','烤',60,480,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('叉烧','色泽红亮，甜香可口，广式经典烧味','粤菜','普通','烤',60,480,0,0,1,'system');
 SET @r31 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r31,(SELECT id FROM ingredient WHERE name='猪五花肉'),'猪梅花肉','500克',1),
@@ -596,8 +589,8 @@ INSERT INTO recipe_step (recipe_id, step_no, content, duration) VALUES
 (@r31,6,'放凉后切片装盘',5);
 
 -- 32. 夫妻肺片
-INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, is_vip_only, view_count, favorite_count, status, source) VALUES
-('夫妻肺片','麻辣鲜香，红油透亮，川味凉菜之王','川菜','普通','拌',40,280,0,0,0,1,'system');
+INSERT INTO recipe (name, description, cuisine, difficulty, cook_method, cook_time, calories, view_count, favorite_count, status, source) VALUES
+('夫妻肺片','麻辣鲜香，红油透亮，川味凉菜之王','川菜','普通','拌',40,280,0,0,1,'system');
 SET @r32 = LAST_INSERT_ID();
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, name, amount, sort_order) VALUES
 (@r32,(SELECT id FROM ingredient WHERE name='牛肉'),'牛腱子','200克',1),

@@ -26,8 +26,7 @@ flowchart TB
 
     subgraph 增强层 Augmented
         F --> G[用户偏好注入]
-        G --> H[会员权益过滤]
-        H --> I[上下文拼装]
+        G --> I[上下文拼装]
     end
 
     subgraph 生成层 Generation
@@ -96,7 +95,6 @@ flowchart LR
 2. **关键词检索**：在 MySQL 中对 `cuisine`、`difficulty`、`cook_method`、`name` 字段进行 LIKE / FULLTEXT 匹配
 3. **用户偏好增强**：根据用户偏好（口味/忌口/菜系）对候选集加权
 4. **RRF 融合排序**：使用 Reciprocal Rank Fusion 算法合并多路结果
-5. **会员过滤**：非 VIP 用户移除 `is_vip_only=1` 的菜谱
 
 ### 3.3 数据索引
 

@@ -27,21 +27,7 @@ onMounted(async () => {
     const data: AdminDashboard = await getDashboard()
     stats.value = [
       { title: '菜谱总数', display: String(data.totalRecipes), color: '#e74c3c' },
-      { title: '注册用户', display: String(data.totalUsers), color: '#3498db' },
-      {
-        title: 'VIP 会员',
-        display: String(data.vipUsers),
-        color: '#f39c12',
-        sub: `共 ${data.totalUsers} 注册`
-      },
-      {
-        title: '今日订单',
-        display: String(data.todayOrders),
-        color: '#2ecc71',
-        sub: `¥${Number(data.todayRevenue).toFixed(2)}`
-      },
-      { title: '总订单数', display: String(data.totalOrders), color: '#9b59b6' },
-      { title: '总营收', display: `¥${Number(data.totalRevenue).toFixed(2)}`, color: '#1abc9c' }
+      { title: '注册用户', display: String(data.totalUsers), color: '#3498db' }
     ]
   } catch {
     stats.value = []

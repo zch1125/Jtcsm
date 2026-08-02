@@ -69,11 +69,6 @@
           <el-col :span="8">
             <el-form-item label="热量"><el-input-number v-model="form.calories" :min="0" /></el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="VIP专属">
-              <el-switch v-model="form.isVipOnly" />
-            </el-form-item>
-          </el-col>
         </el-row>
       </el-form>
       <template #footer>
@@ -130,7 +125,7 @@ function calcIndex(index: number): number {
 }
 
 function resetForm() {
-  form.value = { name: '', cuisine: '', difficulty: '简单', cookTime: 30, calories: 0, isVipOnly: false }
+  form.value = { name: '', cuisine: '', difficulty: '简单', cookTime: 30, calories: 0 }
   editId.value = null
 }
 

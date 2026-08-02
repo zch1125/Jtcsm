@@ -71,7 +71,7 @@ springdoc:
 jwt:
   secret: ${JWT_SECRET:jtcsm-dev-secret-key-at-least-256-bits-long}
   expiration: 604800000  # 7天，单位毫秒
-  exclude-paths: /api/v1/user/login,/api/v1/recipe/search,/api/v1/recipe/hot,/api/v1/recipe/*/steps,/api/v1/recipe/*,/api/v1/knowledge/**,/api/v1/membership/plans,/api/v1/order/callback,/v3/api-docs/**,/swagger-ui/**,/swagger-resources/**
+  exclude-paths: /api/v1/user/login,/api/v1/recipe/search,/api/v1/recipe/hot,/api/v1/recipe/*/steps,/api/v1/recipe/*,/api/v1/knowledge/**,/v3/api-docs/**,/swagger-ui/**,/swagger-resources/**
 
 # 日志
 logging:

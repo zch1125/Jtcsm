@@ -47,11 +47,6 @@ export interface SystemMonitor {
 export interface AdminDashboard {
   totalRecipes: number
   totalUsers: number
-  todayOrders: number
-  vipUsers: number
-  todayRevenue: number
-  totalOrders: number
-  totalRevenue: number
 }
 
 /**
@@ -67,7 +62,6 @@ export interface RecipeItem {
   cookMethod?: string
   cookTime?: number
   calories?: number
-  isVipOnly?: boolean
   viewCount?: number
   favoriteCount?: number
   status?: number
@@ -86,39 +80,7 @@ export interface UserItem {
   avatar?: string
   phone?: string
   gender?: number
-  isVip?: number
-  vipExpireTime?: string
   status?: number
-  createTime?: string
-  updateTime?: string
-}
-
-/**
- * 订单项
- */
-export interface OrderItem {
-  id?: number
-  orderNo: string
-  userId?: number
-  planId?: number
-  amount: number
-  status?: number
-  payTime?: string
-  createTime?: string
-  updateTime?: string
-}
-
-/**
- * 套餐项
- */
-export interface PlanItem {
-  id?: number
-  name: string
-  price: number
-  originalPrice: number
-  days: number
-  description?: string
-  isEnabled?: number
   createTime?: string
   updateTime?: string
 }
