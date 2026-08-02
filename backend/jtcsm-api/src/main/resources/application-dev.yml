@@ -1,0 +1,37 @@
+# ========================================================
+# 开发环境配置
+# 覆盖 application.yml 中的默认值
+# ========================================================
+spring:
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/jtcsm?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai}
+    username: ${MYSQL_USERNAME:root}
+    password: "${MYSQL_PASSWORD:Pass1234}"
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+  ai:
+    openai:
+      api-key: ${DEEPSEEK_API_KEY:}
+
+jwt:
+  secret: ${JWT_SECRET:jtcsm-dev-secret-key-at-least-256-bits-long}
+
+# Elasticsearch 配置（开发环境覆盖）
+elasticsearch:
+  host: ${ES_HOST:localhost}
+  port: ${ES_PORT:9200}
+  protocol: ${ES_PROTOCOL:http}
+
+logging:
+  level:
+    com.jtcsm: debug
+    org.springframework.ai: debug
+    org.springframework.jdbc: debug
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

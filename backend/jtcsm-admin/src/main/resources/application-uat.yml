@@ -1,0 +1,25 @@
+﻿# ========================================================
+# 管理后台 - 测试（UAT）环境配置
+# ========================================================
+spring:
+  datasource:
+    url: ${MYSQL_URL_UAT}
+    username: ${MYSQL_USERNAME_UAT}
+    password: "${MYSQL_PASSWORD_UAT}"
+  data:
+    redis:
+      host: ${REDIS_HOST_UAT:localhost}
+      port: ${REDIS_PORT_UAT:6379}
+      password: ${REDIS_PASSWORD_UAT:}
+      database: 1
+
+jwt:
+  secret: ${JWT_SECRET_UAT}
+
+admin:
+  username: ${ADMIN_USER_UAT}
+  password: ${ADMIN_PASS_UAT}
+
+logging:
+  level:
+    com.jtcsm: info

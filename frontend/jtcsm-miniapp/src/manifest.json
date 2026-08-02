@@ -1,0 +1,19 @@
+{
+  "name": "今天吃什么",
+  "appid": "",
+  "description": "智能菜谱推荐小程序",
+  "versionName": "1.0.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "postcss": true,
+      "minified": true,
+      "newFeature": true
+    },
+    "usingComponents": true
+  }
+}

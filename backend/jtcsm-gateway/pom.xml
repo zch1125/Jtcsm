@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.jtcsm</groupId>
+        <artifactId>jtcsm-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../jtcsm-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>jtcsm-gateway</artifactId>
+    <packaging>jar</packaging>
+    <name>jtcsm-gateway</name>
+    <description>API 网关模块 —— 统一入口/鉴权/路由/限流</description>
+
+    <dependencies>
+        <!-- 公共模块（JWT 工具类等） -->
+        <dependency>
+            <groupId>com.jtcsm</groupId>
+            <artifactId>jtcsm-common</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <!-- 网关使用 WebFlux（Reactive），排除 Spring MVC 避免冲突 -->
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Spring Cloud Gateway -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+
+        <!-- Redis（限流时使用） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 通过 Maven profile（-P dev/uat/pro）自动切换 Spring profile -->
+                    <profiles>
+                        <profile>${spring.profiles.active}</profile>
+                    </profiles>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

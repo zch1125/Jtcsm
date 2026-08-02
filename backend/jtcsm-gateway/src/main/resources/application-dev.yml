@@ -1,0 +1,29 @@
+﻿# ========================================================
+# API 网关 - 开发环境配置
+# ========================================================
+spring:
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 2
+  cloud:
+    gateway:
+      routes:
+        - id: jtcsm-api
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/**
+        - id: jtcsm-admin
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/admin/**
+
+jwt:
+  secret: ${JWT_SECRET:jtcsm-dev-secret-key-at-least-256-bits-long}
+
+logging:
+  level:
+    com.jtcsm.gateway: debug
+    org.springframework.cloud.gateway: debug

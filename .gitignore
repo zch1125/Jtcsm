@@ -1,0 +1,22 @@
+# IDE
+.idea/
+*.iml
+
+# Java / Maven
+backend/**/target/
+*.class
+
+# Node / uni-app
+frontend/**/node_modules/
+frontend/**/dist/
+frontend/**/unpackage/
+frontend/**/.hbuilderx/
+
+# Runtime / logs
+logs/
+*.log
+
+# Local configuration
+*.local.*
+.env
+.env.*

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.jtcsm</groupId>
+        <artifactId>jtcsm-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    <relativePath>jtcsm-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>jtcsm-root</artifactId>
+    <packaging>pom</packaging>
+    <name>jtcsm-root</name>
+
+    <!-- 聚合所有子模块，方便 IDE 一次性识别 -->
+    <modules>
+        <module>jtcsm-parent</module>
+        <module>jtcsm-common</module>
+        <module>jtcsm-api</module>
+        <module>jtcsm-admin</module>
+        <module>jtcsm-gateway</module>
+    </modules>
+
+</project>
