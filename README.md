@@ -20,7 +20,7 @@
 | AI 模型 | DeepSeek 对话模型、text-embedding-v3 文本向量模型 |
 | 小程序 | uni-app、Vue 3、Pinia |
 | 管理后台 | Vue 3、Vite、Element Plus |
-| 部署 | Docker Compose、Nginx |
+| 部署 | Docker Compose、Nginx、Nacos |
 
 ## 目录结构
 
@@ -34,6 +34,8 @@ backend/
 frontend/
   jtcsm-miniapp/   微信小程序（uni-app）
   jtcsm-web/       管理后台（Vue 3 + Element Plus）
+  jtcsm-web-user/  用户端网页版（与小程序共享账号和数据）
+deploy/            Nacos 配置与初始化脚本
 docs/              数据库、接口、RAG 架构等设计文档
 scripts/           数据抓取、ES 索引等辅助脚本
 ```
@@ -51,6 +53,10 @@ scripts/           数据抓取、ES 索引等辅助脚本
 ```bash
 mysql -u root -p < docs/sql/01_init.sql
 mysql -u root -p < docs/sql/02_seed.sql
+
+# 可选：导入 579 道带成品图的家常菜完整菜谱库，并回填封面图
+mysql -u root -p < docs/sql/04_seed_recipes_from_pdf.sql
+mysql -u root -p < docs/sql/05_recipe_cover_images.sql
 ```
 
 ### 配置环境变量
@@ -98,16 +104,40 @@ npm install
 npm run dev
 ```
 
+### 启动用户端网页版
+
+```bash
+cd frontend/jtcsm-web-user
+npm install
+npm run dev
+```
+
+网页版与小程序共用同一套后端接口和用户数据，登录同一个账号后收藏、浏览历史、搜索历史、AI 生成记录自动互通。默认访问 `http://localhost:5174`。
+
 ### Docker 一键启动
 
 ```bash
 docker compose up -d
 ```
 
+### Nacos 配置中心
+
+业务配置统一存放在 Nacos（`jtcsm-api/admin/gateway*.yaml`），本地仅保留引导配置。
+
+```bash
+# 单独启动 Nacos（MySQL 持久化 + 自动初始化）
+docker compose up -d mysql nacos-db-init nacos
+
+# 首次部署或修改配置后，将 deploy/nacos/configs 下的配置导入 Nacos
+python deploy/nacos/import_configs.py
+```
+
+控制台地址：<http://localhost:8848/nacos>，默认账号 `nacos / nacos`，部署后请及时修改密码。详细说明见 [Nacos 配置中心](docs/06_Nacos配置中心.md)。
+
 ## 接口规范
 
 - 接口路径前缀为 `/api/v1`，采用 RESTful 风格
-- 统一响应格式：`{ "code": 200, "msg": "success", "data": {} }`
+- 统一响应格式：`{ "code": 200, "message": "success", "data": {} }`
 - 鉴权使用 JWT，密钥通过环境变量 `JWT_SECRET` 注入
 
 ## 项目文档
@@ -115,6 +145,8 @@ docker compose up -d
 - [数据库设计](docs/01_数据库设计.md)
 - [接口文档](docs/02_接口文档.md)
 - [RAG 架构设计](docs/03_RAG架构设计.md)
+- [Nacos 配置中心](docs/06_Nacos配置中心.md)
+- [菜谱数据说明](docs/recipes/README.md)
 
 ## 安全说明
 
