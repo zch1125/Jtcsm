@@ -24,7 +24,7 @@
     <view class="result-count" v-if="searchTotal">共 {{ searchTotal }} 个结果</view>
 
     <view v-for="r in searchResults" :key="r.id" class="recipe-row" @tap="goDetail(r.id)">
-      <image :src="r.coverImage" mode="aspectFill" class="row-cover" />
+      <image :src="resolveImageUrl(r.coverImage)" mode="aspectFill" class="row-cover" />
       <view class="row-info">
         <text class="row-name">{{ r.name }}</text>
         <view class="row-tags">
@@ -44,7 +44,7 @@
 
   <!-- 详情模式 -->
   <view class="page" v-else-if="recipe">
-    <image :src="recipe.coverImage" mode="aspectFill" class="cover" />
+    <image :src="resolveImageUrl(recipe.coverImage)" mode="aspectFill" class="cover" />
     <view class="info">
       <text class="name">{{ recipe.name }}</text>
       <view class="meta">
@@ -94,6 +94,7 @@ import {
   removeFavorite,
   checkFavorited,
 } from "../../api/index"
+import { resolveImageUrl } from "../../utils/request"
 
 // ==================== 模式判断 ====================
 const mode = ref<"detail" | "search">("detail")

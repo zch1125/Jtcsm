@@ -1,0 +1,86 @@
+# ========================================================
+# jtcsm-api 基础配置（Nacos 配置中心）
+# 环境差异配置见 jtcsm-api-dev/uat/pro.yaml
+# 敏感信息一律通过环境变量注入
+# ========================================================
+server:
+  port: 8081
+
+# 菜谱成品图静态目录（默认相对 backend/jtcsm-api 启动目录；容器内通过 RECIPE_IMAGE_DIR 指定）
+recipe:
+  image-dir: ${RECIPE_IMAGE_DIR:../../docs/recipes/images}
+
+spring:
+  application:
+    name: jtcsm-api
+
+  # 数据源配置
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/jtcsm?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai}
+    username: ${MYSQL_USERNAME:root}
+    password: "${MYSQL_PASSWORD:Pass1234}"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+  # Redis 配置
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+
+  # Spring AI 配置：DeepSeek 对话 + DashScope Embedding
+  ai:
+    openai:
+      api-key: ${DEEPSEEK_API_KEY:}
+      base-url: https://api.deepseek.com
+      chat:
+        api-key: ${DEEPSEEK_API_KEY:}
+        base-url: https://api.deepseek.com
+        options:
+          model: deepseek-chat
+      embedding:
+        api-key: ${EMBEDDING_API_KEY:${DASHSCOPE_API_KEY:}}
+        base-url: ${EMBEDDING_BASE_URL:https://dashscope.aliyuncs.com/compatible-mode}
+        options:
+          model: ${EMBEDDING_MODEL:text-embedding-v3}
+          dimensions: 1024
+
+# Elasticsearch 配置
+elasticsearch:
+  host: ${ES_HOST:localhost}
+  port: ${ES_PORT:9200}
+  protocol: ${ES_PROTOCOL:http}
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# Swagger 接口文档
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+# JWT 配置
+jwt:
+  secret: ${JWT_SECRET:jtcsm-dev-secret-key-at-least-256-bits-long}
+  expiration: 604800000  # 7天，单位毫秒
+  exclude-paths: /api/v1/user/login,/api/v1/recipe/search,/api/v1/recipe/hot,/api/v1/recipe/*/steps,/api/v1/recipe/*,/api/v1/knowledge/**,/v3/api-docs/**,/swagger-ui/**,/swagger-resources/**
+
+# 日志
+logging:
+  level:
+    com.jtcsm: debug
+    org.springframework.ai: debug

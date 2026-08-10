@@ -26,6 +26,11 @@ export default defineConfig({
       "/api/admin": {
         target: "http://localhost:8082",
         changeOrigin: true
+      },
+      // 菜谱封面图由 API 服务提供
+      "/static": {
+        target: "http://localhost:8081",
+        changeOrigin: true
       }
     }
   }

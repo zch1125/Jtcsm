@@ -3,6 +3,8 @@ package com.jtcsm.common.dto;
 import java.util.List;
 
 public class AiRecipeItem {
+    private Long recipeId;
+    private String coverImage;
     private String name;
     private String cuisine;
     private String difficulty;
@@ -10,6 +12,10 @@ public class AiRecipeItem {
     private List<AiIngredientItem> ingredients;
     private List<AiStepItem> steps;
 
+    public Long getRecipeId() { return recipeId; }
+    public void setRecipeId(Long recipeId) { this.recipeId = recipeId; }
+    public String getCoverImage() { return coverImage; }
+    public void setCoverImage(String coverImage) { this.coverImage = coverImage; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getCuisine() { return cuisine; }

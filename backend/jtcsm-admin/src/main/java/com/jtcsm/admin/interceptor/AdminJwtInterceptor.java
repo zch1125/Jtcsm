@@ -21,7 +21,13 @@ public class AdminJwtInterceptor implements HandlerInterceptor {
 
         String auth = req.getHeader("Authorization");
         if (auth == null || !auth.startsWith("Bearer ")) { resp.setStatus(401); return false; }
-        try { return jwtUtil.validateToken(auth.substring(7)); }
+        try {
+            if (!jwtUtil.validateToken(auth.substring(7))) {
+                resp.setStatus(401);
+                return false;
+            }
+            return true;
+        }
         catch (Exception e) { resp.setStatus(401); return false; }
     }
 }

@@ -4,6 +4,8 @@ import com.jtcsm.common.dto.AiFeedbackRequest;
 import com.jtcsm.common.dto.AiGenerateRecordVO;
 import com.jtcsm.common.dto.AiGenerateRequest;
 import com.jtcsm.common.dto.AiGenerateResponse;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
 import java.util.List;
 
 /**
@@ -11,6 +13,7 @@ import java.util.List;
  */
 public interface AiService {
     AiGenerateResponse generate(Long userId, AiGenerateRequest request);
+    void generateStream(Long userId, AiGenerateRequest request, SseEmitter emitter);
     List<AiGenerateRecordVO> getHistory(Long userId, int page, int size);
     AiGenerateRecordVO getHistoryDetail(Long userId, Long id);
     void saveToFavorite(Long userId, Long historyId);

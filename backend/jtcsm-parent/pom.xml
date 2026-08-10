@@ -37,6 +37,7 @@
         <druid.version>1.2.23</druid.version>
         <hutool.version>5.8.32</hutool.version>
         <spring-cloud.version>2024.0.1</spring-cloud.version>
+        <spring-cloud-alibaba.version>2023.0.3.4</spring-cloud-alibaba.version>
 
         <!-- Spring Boot 运行环境 profile（默认 dev，通过 Maven profile 覆盖） -->
         <spring.profiles.active>dev</spring.profiles.active>
@@ -66,6 +67,15 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Cloud Alibaba（Nacos 配置中心） -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

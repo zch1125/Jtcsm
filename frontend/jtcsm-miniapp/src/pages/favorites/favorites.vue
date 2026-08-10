@@ -38,7 +38,7 @@
         class="recipe-card"
         @tap="goDetail(item.recipeId)"
       >
-        <image :src="item.coverImage" class="card-cover" mode="aspectFill" />
+        <image :src="resolveImageUrl(item.coverImage)" class="card-cover" mode="aspectFill" />
         <view class="card-info">
           <text class="card-name">{{ item.name }}</text>
           <view class="card-tags">
@@ -77,7 +77,7 @@
         class="recipe-card"
         @tap="goDetail(item.recipeId)"
       >
-        <image :src="item.coverImage" class="card-cover" mode="aspectFill" />
+        <image :src="resolveImageUrl(item.coverImage)" class="card-cover" mode="aspectFill" />
         <view class="card-info">
           <text class="card-name">{{ item.name }}</text>
           <view class="card-tags">
@@ -100,6 +100,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { getFavorites, removeFavorite, getHistory } from '../../api/index'
+import { resolveImageUrl } from '../../utils/request'
 
 // ==================== Tab 状态 ====================
 const currentTab = ref<'favorites' | 'history'>('favorites')

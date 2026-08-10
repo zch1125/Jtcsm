@@ -78,8 +78,10 @@ public class RagPipelineService {
         sb.append("2. 输出必须符合用户的具体要求（食材、菜名、口味、烹饪限制等）\n");
         sb.append("3. 如果用户指定了食材，优先使用这些食材\n");
         sb.append("4. 每道菜谱的步骤应清晰完整，包含步骤序号、操作说明和预估时长\n");
-        sb.append("5. 确保烹饪时间、难度评估合理\n\n");
-        sb.append("严格仅以以下 JSON 数组格式回答，不要包含其他文字或 Markdown 标记：\n");
+        sb.append("5. 确保烹饪时间、难度评估合理\n");
+        sb.append("6. 推荐数量和类型以用户要求为准（例如“四菜一汤”就推荐 4 道菜和 1 道汤）\n");
+        sb.append("7. 可以自由搭配并适当补充食材，保证菜谱搭配合理、可操作\n\n");
+        sb.append("不要输出任何文字说明，直接输出 ```json 代码块，包含以下格式的菜谱 JSON 数组：\n");
         sb.append("[{name,cuisine,difficulty,cookTime,ingredients:[{name,amount}],steps:[{stepNo,content,duration}]}]");
 
         return sb.toString();

@@ -1,0 +1,58 @@
+# ========================================================
+# jtcsm-gateway 基础配置（Nacos 配置中心）
+# 环境差异配置见 jtcsm-gateway-dev/uat/pro.yaml
+# 敏感信息一律通过环境变量注入
+# ========================================================
+server:
+  port: 8080
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: jtcsm-gateway
+
+  # Redis（限流、会话）
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 2
+
+  cloud:
+    gateway:
+      # 路由规则
+      routes:
+        # 小程序 API -> jtcsm-api:8081
+        - id: jtcsm-api
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/**
+
+        # 管理后台 API -> jtcsm-admin:8082
+        - id: jtcsm-admin
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/admin/**
+
+      # 全局 CORS（允许前端跨域）
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+
+# JWT 配置
+jwt:
+  secret: ${JWT_SECRET:jtcsm-dev-secret-key-at-least-256-bits-long}
+  expiration: 604800000
+  exclude-paths: /api/v1/auth/**,/api/admin/login,/v3/api-docs/**,/swagger-ui/**,/swagger-resources/**
+
+# 日志
+logging:
+  level:
+    com.jtcsm.gateway: debug
+    org.springframework.cloud.gateway: info

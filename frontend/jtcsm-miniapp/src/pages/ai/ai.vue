@@ -22,26 +22,41 @@
           <view v-if="msg.role === 'ai'" class="msg-row ai-row">
             <view class="ai-avatar">AI</view>
             <view class="ai-body">
-              <text class="ai-label">AI 推荐菜谱</text>
+              <text class="ai-label">AI 回复</text>
+
+              <view v-if="msg.content" class="ai-text">
+                <text class="msg-text">{{ msg.content }}</text>
+              </view>
+              <view v-else-if="msg.streaming" class="thinking">AI 正在思考...</view>
 
               <!-- 多道菜谱卡片 -->
               <view
                 v-for="(rc, ri) in msg.recipes"
+                v-if="msg.recipes && msg.recipes.length > 0"
                 :key="ri"
                 class="recipe-card"
                 :class="{ expanded: msg.expanded === ri }"
-                @tap="toggleExpand(mi, ri)"
+                @tap="openRecipe(mi, ri)"
               >
-                <!-- 卡片头部 -->
-                <view class="rc-header">
-                  <view class="rc-name-row">
-                    <text class="rc-name">{{ rc.name }}</text>
-                    <text class="rc-icon">{{ msg.expanded === ri ? '▾' : '▸' }}</text>
-                  </view>
-                  <view class="rc-meta">
-                    <text class="rc-tag">{{ rc.cuisine }}</text>
-                    <text class="rc-tag">{{ rc.difficulty }}</text>
-                    <text class="rc-tag">{{ rc.cookTime }}分</text>
+                <view class="rc-top">
+                  <image
+                    v-if="rc.coverImage"
+                    :src="resolveImageUrl(rc.coverImage)"
+                    mode="aspectFill"
+                    class="rc-cover"
+                  />
+                  <view v-else class="rc-cover rc-cover-empty"></view>
+                  <!-- 卡片头部 -->
+                  <view class="rc-header">
+                    <view class="rc-name-row">
+                      <text class="rc-name">{{ rc.name }}</text>
+                      <text class="rc-icon">{{ msg.expanded === ri ? '▾' : '▸' }}</text>
+                    </view>
+                    <view class="rc-meta">
+                      <text class="rc-tag">{{ rc.cuisine }}</text>
+                      <text class="rc-tag">{{ rc.difficulty }}</text>
+                      <text class="rc-tag">{{ rc.cookTime }}分</text>
+                    </view>
                   </view>
                 </view>
 
@@ -66,16 +81,7 @@
             </view>
           </view>
         </view>
-
-        <!-- AI 输入提示 -->
-        <view v-if="loading" id="m-loading" class="msg-wrapper">
-          <view class="msg-row ai-row">
-            <view class="ai-avatar">AI</view>
-            <view class="ai-body">
-              <view class="thinking">AI 正在思考...</view>
-            </view>
-          </view>
-        </view>
+        <view id="msg-bottom" class="msg-bottom"></view>
       </scroll-view>
 
       <!-- 快捷建议 -->
@@ -118,11 +124,14 @@
 
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
-import { aiGenerate, getAiHistory, saveAiToFavorite } from '../../api/index'
+import { aiGenerateStream, getAiHistory, saveAiToFavorite } from '../../api/index'
+import { resolveImageUrl } from '../../utils/request'
 
 const currentView = ref<'chat' | 'history'>('chat')
 
 interface RecipeItem {
+  recipeId?: number
+  coverImage?: string
   name: string
   cuisine: string
   difficulty: string
@@ -134,6 +143,7 @@ interface RecipeItem {
 interface Message {
   role: 'user' | 'ai'
   content?: string
+  streaming?: boolean
   recipes?: RecipeItem[]
   expanded?: number
 }
@@ -154,7 +164,7 @@ const suggestions = [
 ]
 
 const COMMON_INGREDIENTS = [
-  '鸡蛋', '番茄', '土豆', '牛肉', '猪肉', '鸡肉', '豆腐',
+  '鸡蛋', '番茄', '西红柿', '土豆', '牛肉', '猪肉', '鸡肉', '豆腐',
   '鱼', '虾', '排骨', '鸡翅', '茄子', '青椒', '白菜',
   '包菜', '西兰花', '萝卜', '胡萝卜', '黄瓜', '洋葱',
   '葱', '姜', '蒜', '辣椒', '玉米', '豆角', '蘑菇', '木耳',
@@ -171,6 +181,11 @@ async function sendMessage() {
   showSuggestions.value = false
   scrollToBottom()
 
+  const aiMsg: Message = { role: 'ai', content: '', streaming: true, recipes: [], expanded: -1 }
+  messages.value.push(aiMsg)
+  const aiIndex = messages.value.length - 1
+  scrollToBottom()
+
   loading.value = true
   try {
     const { mode, ingredients, conditions, name } = parseInput(text)
@@ -184,20 +199,43 @@ async function sendMessage() {
       if (conditions) params.conditions = conditions
     }
 
-    const res = await aiGenerate(params)
-
-    if (res.recipes && res.recipes.length > 0) {
-      messages.value.push({
-        role: 'ai',
-        recipes: res.recipes,
-        expanded: -1,
+    await new Promise<void>((resolve) => {
+      aiGenerateStream(params, {
+        onDelta: (delta) => {
+          aiMsg.content = (aiMsg.content || '') + delta
+          messages.value = [...messages.value]
+          scrollToBottom()
+        },
+        onDone: (data) => {
+          aiMsg.recipes = (data.recipes || []).slice(0, 8)
+          aiMsg.streaming = false
+          // 兜底清理：如果流式内容里混入了 JSON 代码块，只保留前面的推荐说明
+          const marker = (aiMsg.content || '').indexOf('```')
+          if (marker >= 0) {
+            aiMsg.content = (aiMsg.content || '').substring(0, marker).trim()
+          }
+          if (!aiMsg.content && aiMsg.recipes && aiMsg.recipes.length > 0) {
+            aiMsg.content = '已为你推荐：' + aiMsg.recipes.map((r) => r.name).join('、')
+          }
+          messages.value = [...messages.value]
+          nextTick(() => {
+            scrollTarget.value = 'm-' + aiIndex
+          })
+          resolve()
+        },
+        onError: (message) => {
+          aiMsg.streaming = false
+          if (!aiMsg.content) aiMsg.content = 'AI 生成失败，请重试'
+          messages.value = [...messages.value]
+          uni.showToast({ title: message || 'AI 生成失败，请重试', icon: 'none' })
+          resolve()
+        },
       })
-    } else {
-      messages.value.push({ role: 'ai', recipes: [], expanded: -1 })
-      // push an empty AI message when no recipes
-    }
+    })
   } catch (e) {
-    messages.value.push({ role: 'ai', recipes: [], expanded: -1 })
+    aiMsg.streaming = false
+    if (!aiMsg.content) aiMsg.content = 'AI 生成失败，请重试'
+    messages.value = [...messages.value]
     uni.showToast({ title: 'AI 生成失败，请重试', icon: 'none' })
   } finally {
     loading.value = false
@@ -245,6 +283,18 @@ function toggleExpand(msgIdx: number, recipeIdx: number) {
   nextTick(() => scrollToBottom())
 }
 
+/** 推荐卡片点击：有数据库菜谱时跳详情页，否则退回展开预览 */
+function openRecipe(msgIdx: number, recipeIdx: number) {
+  const msg = messages.value[msgIdx]
+  const rc = msg?.recipes?.[recipeIdx]
+  if (!rc) return
+  if (rc.recipeId) {
+    uni.navigateTo({ url: '/pages/recipe/recipe?id=' + rc.recipeId })
+    return
+  }
+  toggleExpand(msgIdx, recipeIdx)
+}
+
 function quickSuggest(text: string) {
   userInput.value = text
   sendMessage()
@@ -252,8 +302,7 @@ function quickSuggest(text: string) {
 
 function scrollToBottom() {
   nextTick(() => {
-    const id = loading.value ? 'm-loading' : 'm-' + (messages.value.length - 1)
-    scrollTarget.value = id
+    scrollTarget.value = 'msg-bottom'
   })
 }
 
@@ -350,11 +399,17 @@ function loadHistoryItem(h: HistoryRecord) {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 0;
 }
 
 .messages {
   flex: 1;
   padding: 20rpx;
+  height: 0;
+  min-height: 0;
+}
+.msg-bottom {
+  height: 1rpx;
 }
 .msg-wrapper {
   margin-bottom: 20rpx;
@@ -404,6 +459,16 @@ function loadHistoryItem(h: HistoryRecord) {
   display: block;
 }
 
+.ai-text {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  margin-bottom: 10rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 .thinking {
   color: #999;
   font-size: 26rpx;
@@ -417,7 +482,24 @@ function loadHistoryItem(h: HistoryRecord) {
   margin-bottom: 10rpx;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
 }
+.rc-top {
+  display: flex;
+  align-items: center;
+}
+.rc-cover {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 8rpx;
+  background: #f5f5f5;
+  flex-shrink: 0;
+  margin-right: 16rpx;
+}
+.rc-cover-empty {
+  background: #f5f5f5;
+}
 .rc-header {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
 }

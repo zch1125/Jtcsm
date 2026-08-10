@@ -1,0 +1,34 @@
+# ========================================================
+# jtcsm-admin 生产环境配置
+# 所有敏感信息必须通过环境变量注入，禁止硬编码
+# ========================================================
+spring:
+  datasource:
+    url: ${MYSQL_URL_PRO}
+    username: ${MYSQL_USERNAME_PRO}
+    password: "${MYSQL_PASSWORD_PRO}"
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 30
+      max-wait: 60000
+      test-on-borrow: false
+      test-while-idle: true
+      validation-query: SELECT 1
+  data:
+    redis:
+      host: ${REDIS_HOST_PRO}
+      port: ${REDIS_PORT_PRO:6379}
+      password: ${REDIS_PASSWORD_PRO}
+      database: 1
+
+jwt:
+  secret: ${JWT_SECRET_PRO}
+
+admin:
+  username: ${ADMIN_USER_PRO}
+  password: ${ADMIN_PASS_PRO}
+
+logging:
+  level:
+    com.jtcsm: warn

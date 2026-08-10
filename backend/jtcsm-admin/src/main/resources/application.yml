@@ -1,44 +1,38 @@
-server:
-  port: 8082
-
+# ========================================================
+# Nacos 引导配置
+# 业务配置统一存放在 Nacos（jtcsm-admin.yaml + jtcsm-admin-{profile}.yaml）
+# ========================================================
 spring:
   application:
     name: jtcsm-admin
-  autoconfigure:
-    exclude: org.springframework.ai.autoconfigure.openai.OpenAiAutoConfiguration
-  datasource:
-    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/jtcsm?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai}
-    username: ${MYSQL_USERNAME:root}
-    password: "${MYSQL_PASSWORD:Pass1234}"
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.alibaba.druid.pool.DruidDataSource
-  data:
-    redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:}
-      database: 0
-
-mybatis-plus:
-  global-config:
-    db-config:
-      id-type: auto
-  configuration:
-    map-underscore-to-camel-case: true
-
-jwt:
-  secret: ${JWT_SECRET:jtcsm-dev-secret-key-at-least-256-bits-long}
-  expiration: 604800000
-
-admin:
-  username: ${ADMIN_USER:admin}
-  password: ${ADMIN_PASS:admin123}
-
-management:
-  health:
-    elasticsearch:
-      enabled: false
-
-logging:
-  level:
-    com.jtcsm: debug
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  cloud:
+    nacos:
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:nacos}
+        file-extension: yaml
+        timeout: 5000
+  config:
+    import:
+      - "nacos:jtcsm-admin.yaml?refreshEnabled=true&group=DEFAULT_GROUP"
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import: "nacos:jtcsm-admin-dev.yaml?refreshEnabled=true&group=DEFAULT_GROUP"
+---
+spring:
+  config:
+    activate:
+      on-profile: uat
+    import: "nacos:jtcsm-admin-uat.yaml?refreshEnabled=true&group=DEFAULT_GROUP"
+---
+spring:
+  config:
+    activate:
+      on-profile: pro
+    import: "nacos:jtcsm-admin-pro.yaml?refreshEnabled=true&group=DEFAULT_GROUP"

@@ -34,7 +34,7 @@
       <text class="section-title">每日推荐</text>
       <scroll-view scroll-x class="h-scroll">
         <view v-for="r in dailyList" :key="r.id" class="h-card" @tap="goDetail(r.id)">
-          <image :src="r.coverImage" mode="aspectFill" class="h-cover" />
+          <image :src="resolveImageUrl(r.coverImage)" mode="aspectFill" class="h-cover" />
           <text class="h-name">{{ r.name }}</text>
         </view>
       </scroll-view>
@@ -44,7 +44,7 @@
     <view class="section">
       <text class="section-title">热门菜谱</text>
       <view v-for="r in hotList" :key="r.id" class="recipe-row" @tap="goDetail(r.id)">
-        <image :src="r.coverImage" mode="aspectFill" class="row-cover" />
+        <image :src="resolveImageUrl(r.coverImage)" mode="aspectFill" class="row-cover" />
         <view class="row-info">
           <text class="row-name">{{ r.name }}</text>
           <view class="row-tags">
@@ -66,6 +66,7 @@ import {
   getSearchHistory,
   clearSearchHistory,
 } from "../../api/index"
+import { resolveImageUrl } from "../../utils/request"
 
 const keyword = ref("")
 const hotList = ref<any[]>([])

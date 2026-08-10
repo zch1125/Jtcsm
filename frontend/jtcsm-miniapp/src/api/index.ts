@@ -1,7 +1,7 @@
 ﻿/**
  * API 接口封装 - 所有后端 API 的调用入口
  */
-import request from '../utils/request'
+import request, { StreamEventHandlers } from '../utils/request'
 
 // ==================== 通用类型 ====================
 
@@ -122,6 +122,21 @@ export function aiGenerate(params: {
   conditions?: string
 }): Promise<AiGenerateResponseData> {
   return request.post("/api/v1/ai/generate", params)
+}
+
+/** AI 流式生成菜谱（SSE：先输出推荐文字，再下发菜谱卡片） */
+export function aiGenerateStream(
+  params: {
+    mode: string
+    ingredients?: string[]
+    name?: string
+    cuisineA?: string
+    cuisineB?: string
+    conditions?: string
+  },
+  handlers: StreamEventHandlers,
+) {
+  return request.stream("/api/v1/ai/generate/stream", params, handlers)
 }
 
 /** AI 生成历史列表 */

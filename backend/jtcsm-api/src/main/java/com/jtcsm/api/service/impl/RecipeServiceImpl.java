@@ -74,8 +74,15 @@ public class RecipeServiceImpl implements RecipeService {
         wrapper.eq(Recipe::getStatus, 1)
                .orderByDesc(Recipe::getViewCount);
 
-        Page<Recipe> page = new Page<>(pageNum, pageSize);
-        return recipeMapper.selectPage(page, wrapper);
+        // 手动分页：3.5.9 未注册 PaginationInnerInterceptor，selectPage 不会计算 total
+        long total = recipeMapper.selectCount(wrapper);
+        Page<Recipe> page = new Page<>(pageNum, pageSize, total);
+        if (total > 0) {
+            long offset = (long) (pageNum - 1) * pageSize;
+            wrapper.last("LIMIT " + pageSize + " OFFSET " + offset);
+            page.setRecords(recipeMapper.selectList(wrapper));
+        }
+        return page;
     }
 
     @Override

@@ -6,6 +6,7 @@ import co.elastic.clients.elasticsearch._types.mapping.Property;
 import co.elastic.clients.elasticsearch._types.mapping.TextProperty;
 import co.elastic.clients.elasticsearch._types.mapping.KeywordProperty;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.Operator;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
@@ -250,7 +251,7 @@ public class KnowledgeBaseMdService implements CommandLineRunner {
             // BM25 全文检索：在 content 字段上搜索
             Query boolQuery = Query.of(q -> q.bool(b -> b
                     .should(Query.of(q1 -> q1.match(m -> m
-                            .field("content").query(queryText).boost(2.0f))))
+                            .field("content").query(queryText).operator(Operator.And).boost(2.0f))))
                     .should(Query.of(q1 -> q1.match(m -> m
                             .field("recipe_name").query(queryText).boost(3.0f))))
             ));

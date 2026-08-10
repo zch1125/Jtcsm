@@ -43,7 +43,26 @@
     <el-dialog v-model="dialogVisible" :title="isEdit ? '编辑菜谱' : '新增菜谱'" width="600px" @closed="resetForm">
       <el-form :model="form" label-width="100px">
         <el-form-item label="菜名"><el-input v-model="form.name" /></el-form-item>
-        <el-form-item label="封面图"><el-input v-model="form.coverImage" placeholder="图片URL" /></el-form-item>
+        <el-form-item label="封面图">
+          <div class="cover-field">
+            <el-image
+              v-if="coverSrc"
+              :src="coverSrc"
+              :preview-src-list="[coverSrc]"
+              preview-teleported
+              fit="cover"
+              class="cover-img"
+            />
+            <div v-else class="cover-img cover-empty">暂无图片</div>
+            <div class="cover-actions">
+              <el-button v-if="!showCoverInput" link type="primary" @click="showCoverInput = true">更换图片</el-button>
+              <template v-else>
+                <el-input v-model="form.coverImage" placeholder="图片URL" style="width: 240px" />
+                <el-button link type="primary" @click="showCoverInput = false">完成</el-button>
+              </template>
+            </div>
+          </div>
+        </el-form-item>
         <el-form-item label="简介"><el-input v-model="form.description" type="textarea" :rows="2" /></el-form-item>
         <el-row :gutter="20">
           <el-col :span="8">
@@ -80,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getRecipeList, createRecipe, updateRecipe, deleteRecipe } from '@/api/recipe'
 import type { RecipeItem } from '@/api/types'
@@ -96,6 +115,12 @@ const dialogVisible = ref(false)
 const isEdit = ref(false)
 const editId = ref<number | null>(null)
 const form = ref<Partial<RecipeItem>>({})
+const showCoverInput = ref(false)
+
+/** 相对路径直接交给浏览器加载，开发环境由 vite 代理到 API */
+const coverSrc = computed(() => {
+  return form.value.coverImage?.trim() || ''
+})
 
 onMounted(() => fetchData())
 
@@ -127,6 +152,7 @@ function calcIndex(index: number): number {
 function resetForm() {
   form.value = { name: '', cuisine: '', difficulty: '简单', cookTime: 30, calories: 0 }
   editId.value = null
+  showCoverInput.value = false
 }
 
 function openCreate() { isEdit.value = false; resetForm(); dialogVisible.value = true }
@@ -153,4 +179,8 @@ async function handleDelete(row: RecipeItem) {
 .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .header-right { display: flex; gap: 12px; align-items: center; }
 .pagination-wrap { display: flex; justify-content: flex-end; margin-top: 16px; }
+.cover-field { display: flex; align-items: center; gap: 12px; }
+.cover-img { width: 120px; height: 120px; border-radius: 8px; background: #f5f5f5; flex-shrink: 0; }
+.cover-empty { display: flex; align-items: center; justify-content: center; color: #999; font-size: 13px; }
+.cover-actions { display: flex; align-items: center; gap: 8px; }
 </style>

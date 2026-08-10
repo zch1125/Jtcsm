@@ -1,0 +1,41 @@
+# ========================================================
+# jtcsm-gateway 生产环境配置
+# 所有敏感信息必须通过环境变量注入，禁止硬编码
+# ========================================================
+spring:
+  data:
+    redis:
+      host: ${REDIS_HOST_PRO}
+      port: ${REDIS_PORT_PRO:6379}
+      password: ${REDIS_PASSWORD_PRO}
+      database: 2
+      lettuce:
+        pool:
+          max-active: 20
+          max-idle: 10
+          min-idle: 5
+  cloud:
+    gateway:
+      routes:
+        - id: jtcsm-api
+          uri: ${API_PRO_URL}
+          predicates:
+            - Path=/api/v1/**
+        - id: jtcsm-admin
+          uri: ${ADMIN_PRO_URL}
+          predicates:
+            - Path=/api/admin/**
+      # 生产环境启用断路器
+      default-filters:
+        - name: CircuitBreaker
+          args:
+            name: gatewayCircuitBreaker
+            fallbackUri: forward:/fallback
+
+jwt:
+  secret: ${JWT_SECRET_PRO}
+
+logging:
+  level:
+    com.jtcsm.gateway: warn
+    org.springframework.cloud.gateway: warn

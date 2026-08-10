@@ -1,0 +1,42 @@
+# ========================================================
+# jtcsm-api 测试（UAT）环境配置
+# 敏感信息必须通过环境变量注入
+# ========================================================
+spring:
+  datasource:
+    url: ${MYSQL_URL_UAT}
+    username: ${MYSQL_USERNAME_UAT}
+    password: "${MYSQL_PASSWORD_UAT}"
+  data:
+    redis:
+      host: ${REDIS_HOST_UAT:localhost}
+      port: ${REDIS_PORT_UAT:6379}
+      password: ${REDIS_PASSWORD_UAT:}
+      database: 0
+  ai:
+    openai:
+      api-key: ${DEEPSEEK_API_KEY_UAT}
+      base-url: https://api.deepseek.com
+      chat:
+        api-key: ${DEEPSEEK_API_KEY_UAT}
+        base-url: https://api.deepseek.com
+        options:
+          model: deepseek-chat
+      embedding:
+        api-key: ${EMBEDDING_API_KEY_UAT}
+        base-url: ${EMBEDDING_BASE_URL_UAT:https://dashscope.aliyuncs.com/compatible-mode}
+        options:
+          model: ${EMBEDDING_MODEL_UAT:text-embedding-v3}
+          dimensions: 1024
+
+jwt:
+  secret: ${JWT_SECRET_UAT}
+
+logging:
+  level:
+    com.jtcsm: info
+    org.springframework.ai: info
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

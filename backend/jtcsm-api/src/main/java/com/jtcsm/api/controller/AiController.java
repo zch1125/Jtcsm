@@ -8,7 +8,12 @@ import com.jtcsm.common.dto.AiGenerateRecordVO;
 import com.jtcsm.common.dto.AiGenerateRequest;
 import com.jtcsm.common.dto.AiGenerateResponse;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
@@ -26,8 +32,14 @@ import java.util.List;
 @RequestMapping("/api/v1/ai")
 public class AiController {
 
+    private static final Logger log = LoggerFactory.getLogger(AiController.class);
+
     @Autowired
     private AiService aiService;
+
+    @Autowired
+    @Qualifier("applicationTaskExecutor")
+    private TaskExecutor taskExecutor;
 
     /**
      * AI 生成菜谱
@@ -37,6 +49,30 @@ public class AiController {
     public Result<AiGenerateResponse> generate(@Valid @RequestBody AiGenerateRequest request) {
         Long userId = UserContext.getUserId();
         return Result.ok(aiService.generate(userId, request));
+    }
+
+    /**
+     * AI 流式生成菜谱（SSE：先输出推荐文字，最后下发菜谱卡片）
+     * POST /api/v1/ai/generate/stream
+     */
+    @PostMapping(value = "/generate/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter generateStream(@Valid @RequestBody AiGenerateRequest request) {
+        Long userId = UserContext.getUserId();
+        SseEmitter emitter = new SseEmitter(120_000L);
+        taskExecutor.execute(() -> {
+            try {
+                aiService.generateStream(userId, request, emitter);
+            } catch (Exception e) {
+                log.warn("AI 流式生成异常: {}", e.getMessage());
+                try {
+                    emitter.send(SseEmitter.event().name("error").data("{\"message\":\"AI 生成失败，请重试\"}"));
+                } catch (Exception ignored) {
+                    // 客户端可能已断开连接
+                }
+                emitter.completeWithError(e);
+            }
+        });
+        return emitter;
     }
 
     /**
